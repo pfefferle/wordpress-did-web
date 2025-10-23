@@ -9,6 +9,6 @@
   "license": "GPL-2.0-or-later",
   "description": "",
 	"devDependencies": {
-    "@wordpress/env": "^10.10.0"
+    "@wordpress/env": "^10.33.0"
   }
 }

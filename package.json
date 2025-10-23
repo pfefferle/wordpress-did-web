@@ -1,0 +1,14 @@
+{
+  "name": "wordpress-did",
+  "version": "1.0.0",
+  "scripts": {
+    "env-start": "wp-env start && wp-env run cli wp rewrite structure '/%year%/%monthnum%/%postname%/'",
+    "env-stop": "wp-env stop"
+  },
+  "author": "",
+  "license": "GPL-2.0-or-later",
+  "description": "",
+	"devDependencies": {
+    "@wordpress/env": "^10.10.0"
+  }
+}

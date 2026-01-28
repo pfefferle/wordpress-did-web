@@ -118,7 +118,7 @@ function did( $wp ) {
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON output.
 		echo DID_Document::get_json();
-		\exit;
+		exit;
 	}
 }
 \add_action( 'parse_request', __NAMESPACE__ . '\did' );

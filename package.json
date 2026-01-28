@@ -1,14 +1,17 @@
 {
-  "name": "wordpress-did",
-  "version": "1.0.0",
-  "scripts": {
-    "env-start": "wp-env start && wp-env run cli wp rewrite structure '/%year%/%monthnum%/%postname%/'",
-    "env-stop": "wp-env stop"
-  },
-  "author": "",
-  "license": "GPL-2.0-or-later",
-  "description": "",
+	"name": "wordpress-did-web",
+	"version": "1.0.0",
+	"description": "Decentralized Identifier (DID) support for WordPress with AT Protocol/Bluesky compatibility",
+	"author": "Matthias Pfefferle",
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"env-start": "wp-env start && wp-env run cli wp rewrite structure '/%year%/%monthnum%/%postname%/'",
+		"env-stop": "wp-env stop",
+		"env-test": "wp-env run tests-cli --env-cwd=wp-content/plugins/did-web vendor/bin/phpunit",
+		"lint": "composer lint",
+		"lint:fix": "composer lint:fix"
+	},
 	"devDependencies": {
-    "@wordpress/env": "^10.33.0"
-  }
+		"@wordpress/env": "^10.33.0"
+	}
 }

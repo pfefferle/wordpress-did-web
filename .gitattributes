@@ -1,0 +1,41 @@
+# Distribution exclusions
+# These files/folders are excluded from plugin distribution (WordPress.org SVN, zip exports)
+
+# Git/GitHub
+/.git                       export-ignore
+/.gitattributes             export-ignore
+/.gitignore                 export-ignore
+/.github                    export-ignore
+
+# WordPress.org assets (deployed separately)
+/.wordpress-org             export-ignore
+
+# Development/Build tools
+/bin                        export-ignore
+/node_modules               export-ignore
+/vendor                     export-ignore
+
+# Configuration files
+/.editorconfig              export-ignore
+/.wp-env.json               export-ignore
+/composer.json              export-ignore
+/composer.lock              export-ignore
+/package.json               export-ignore
+/package-lock.json          export-ignore
+/phpcs.xml                  export-ignore
+/phpunit.xml                export-ignore
+/phpunit.xml.dist           export-ignore
+
+# Tests
+/tests                      export-ignore
+
+# Documentation (readme.txt is kept)
+/CHANGELOG.md               export-ignore
+/CONTRIBUTING.md            export-ignore
+/CODE_OF_CONDUCT.md         export-ignore
+/CLAUDE.md                  export-ignore
+
+# IDE/Editor
+/.idea                      export-ignore
+/.vscode                    export-ignore
+*.code-workspace            export-ignore

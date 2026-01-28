@@ -8,7 +8,7 @@
  * @package Did_Web
  */
 
-namespace Did;
+namespace Did_Web;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {

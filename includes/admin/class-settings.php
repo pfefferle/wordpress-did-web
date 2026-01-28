@@ -5,11 +5,11 @@
  * @package Did_Web
  */
 
-namespace Did\Admin;
+namespace Did_Web\Admin;
 
-use Did\Crypto;
-use Did\DID_Document;
-use Did\Plugin_Identity;
+use Did_Web\Crypto;
+use Did_Web\DID_Document;
+use Did_Web\Plugin_Identity;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {

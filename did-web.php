@@ -9,13 +9,12 @@
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: did-web
- * Domain Path: /languages
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * DID: did:web:github.com:pfefferle:wordpress-did
  */
 
-namespace Did;
+namespace Did_Web;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {

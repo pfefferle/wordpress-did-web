@@ -10,7 +10,7 @@
 
 namespace Did_Web;
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,9 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Plugin_Identity {
 
-	const PLUGIN_DID = 'did:web:github.com:pfefferle:wordpress-did';
-	const OPTION_PLUGIN_PRIVATE_KEY = 'did_plugin_identity_private_key';
-	const OPTION_PLUGIN_PUBLIC_KEY  = 'did_plugin_identity_public_key';
+	const PLUGIN_DID                         = 'did:web:github.com:pfefferle:wordpress-did';
+	const OPTION_PLUGIN_PRIVATE_KEY          = 'did_plugin_identity_private_key';
+	const OPTION_PLUGIN_PUBLIC_KEY           = 'did_plugin_identity_public_key';
 	const OPTION_PLUGIN_PUBLIC_KEY_MULTIBASE = 'did_plugin_identity_public_key_multibase';
 
 	/**
@@ -38,8 +38,8 @@ class Plugin_Identity {
 	 * Add rewrite rule for plugin's DID document
 	 */
 	public static function add_rewrite_rules() {
-		// Virtual endpoint for the plugin's own DID document
-		// Accessible at: /did-plugin/did.json
+		// Virtual endpoint for the plugin's own DID document.
+		// Accessible at: /did-plugin/did.json.
 		add_rewrite_rule( 'did-plugin/did.json$', 'index.php?plugin_did=1', 'top' );
 	}
 
@@ -68,6 +68,7 @@ class Plugin_Identity {
 		header( 'Access-Control-Allow-Origin: *' );
 		header( 'Cache-Control: max-age=3600' );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON output.
 		echo self::get_did_document_json();
 		exit;
 	}
@@ -86,11 +87,11 @@ class Plugin_Identity {
 			return false;
 		}
 
-		// Save plugin's own keys in WordPress options (separate from site keys)
+		// Save plugin's own keys in WordPress options (separate from site keys).
 		update_option( self::OPTION_PLUGIN_PRIVATE_KEY, $keypair['private'], false );
 		update_option( self::OPTION_PLUGIN_PUBLIC_KEY, $keypair['public'], false );
 
-		// Generate multibase representation
+		// Generate multibase representation.
 		$multibase = Crypto::public_key_to_multibase( $keypair['public'] );
 		if ( $multibase ) {
 			update_option( self::OPTION_PLUGIN_PUBLIC_KEY_MULTIBASE, $multibase, false );
@@ -105,7 +106,7 @@ class Plugin_Identity {
 	 * @return bool True if identity exists, false otherwise.
 	 */
 	public static function has_identity() {
-		return get_option( self::OPTION_PLUGIN_PRIVATE_KEY, false ) !== false;
+		return false !== get_option( self::OPTION_PLUGIN_PRIVATE_KEY, false );
 	}
 
 	/**
@@ -117,16 +118,16 @@ class Plugin_Identity {
 		$public_key_multibase = get_option( self::OPTION_PLUGIN_PUBLIC_KEY_MULTIBASE, 'zTODO_GENERATE_KEY' );
 
 		$document = array(
-			'@context'   => array(
+			'@context'           => array(
 				'https://www.w3.org/ns/did/v1',
 				'https://w3id.org/security/multikey/v1',
 				'https://w3id.org/security/suites/secp256k1-2019/v1',
 			),
-			'id'         => self::PLUGIN_DID,
-			'alsoKnownAs' => array(
+			'id'                 => self::PLUGIN_DID,
+			'alsoKnownAs'        => array(
 				'https://github.com/pfefferle/wordpress-did',
 			),
-			'controller' => self::PLUGIN_DID,
+			'controller'         => self::PLUGIN_DID,
 			'verificationMethod' => array(
 				array(
 					'id'                 => self::PLUGIN_DID . '#key-1',
@@ -135,13 +136,13 @@ class Plugin_Identity {
 					'publicKeyMultibase' => $public_key_multibase,
 				),
 			),
-			'authentication' => array(
+			'authentication'     => array(
 				self::PLUGIN_DID . '#key-1',
 			),
-			'assertionMethod' => array(
+			'assertionMethod'    => array(
 				self::PLUGIN_DID . '#key-1',
 			),
-			'service' => array(
+			'service'            => array(
 				array(
 					'id'              => '#wordpress-plugin',
 					'type'            => 'WordPressPlugin',

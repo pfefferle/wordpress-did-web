@@ -7,7 +7,7 @@
 
 namespace Did_Web;
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -23,17 +23,17 @@ class DID_Document {
 	 * @return string DID identifier (e.g., did:web:example.com)
 	 */
 	public static function get_did_identifier() {
-		$host = parse_url( home_url(), PHP_URL_HOST );
+		$host = wp_parse_url( home_url(), PHP_URL_HOST );
 
-		// Handle port if not standard
-		$port = parse_url( home_url(), PHP_URL_PORT );
-		if ( $port && ! in_array( $port, array( 80, 443 ) ) ) {
-			$host .= '%3A' . $port; // URL-encode the colon
+		// Handle port if not standard.
+		$port = wp_parse_url( home_url(), PHP_URL_PORT );
+		if ( $port && ! in_array( $port, array( 80, 443 ), true ) ) {
+			$host .= '%3A' . $port; // URL-encode the colon.
 		}
 
-		// Handle path if site is in subdirectory
-		$path = parse_url( home_url(), PHP_URL_PATH );
-		if ( $path && $path !== '/' ) {
+		// Handle path if site is in subdirectory.
+		$path = wp_parse_url( home_url(), PHP_URL_PATH );
+		if ( $path && '/' !== $path ) {
 			$host .= ':' . trim( $path, '/' );
 		}
 
@@ -48,12 +48,12 @@ class DID_Document {
 	public static function generate() {
 		$did_identifier = self::get_did_identifier();
 
-		// Get stored settings
-		$handle          = get_option( 'did_web_handle', '' );
-		$pds_endpoint    = get_option( 'did_web_pds_endpoint', home_url() );
-		$public_key_mb   = get_option( 'did_web_public_key_multibase', '' );
+		// Get stored settings.
+		$handle        = get_option( 'did_web_handle', '' );
+		$pds_endpoint  = get_option( 'did_web_pds_endpoint', home_url() );
+		$public_key_mb = get_option( 'did_web_public_key_multibase', '' );
 
-		// If no public key is configured, try to get from crypto class
+		// If no public key is configured, try to get from crypto class.
 		if ( empty( $public_key_mb ) && Crypto::has_keypair() ) {
 			$public_key    = Crypto::get_public_key();
 			$multibase     = Crypto::public_key_to_multibase( $public_key );
@@ -69,14 +69,14 @@ class DID_Document {
 			'id'       => $did_identifier,
 		);
 
-		// Add alsoKnownAs if handle is configured
+		// Add alsoKnownAs if handle is configured.
 		if ( ! empty( $handle ) ) {
 			$document['alsoKnownAs'] = array(
 				'at://' . $handle,
 			);
 		}
 
-		// Add verification method if public key exists
+		// Add verification method if public key exists.
 		if ( ! empty( $public_key_mb ) ) {
 			$document['verificationMethod'] = array(
 				array(
@@ -88,7 +88,7 @@ class DID_Document {
 			);
 		}
 
-		// Add service endpoint for AT Protocol PDS
+		// Add service endpoint for AT Protocol PDS.
 		$document['service'] = array(
 			array(
 				'id'              => '#atproto_pds',

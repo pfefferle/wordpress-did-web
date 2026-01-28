@@ -11,7 +11,7 @@ use Did_Web\Crypto;
 use Did_Web\DID_Document;
 use Did_Web\Plugin_Identity;
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -46,7 +46,7 @@ class Settings {
 	 * Register settings
 	 */
 	public static function register_settings() {
-		// DID Configuration Section
+		// DID Configuration Section.
 		add_settings_section(
 			'did_web_config',
 			__( 'DID Configuration', 'did-web' ),
@@ -54,7 +54,7 @@ class Settings {
 			'did-web-settings'
 		);
 
-		// Handle field
+		// Handle field.
 		register_setting(
 			'did_web_settings',
 			'did_web_handle',
@@ -71,7 +71,7 @@ class Settings {
 			'did_web_config'
 		);
 
-		// PDS Endpoint field
+		// PDS Endpoint field.
 		register_setting(
 			'did_web_settings',
 			'did_web_pds_endpoint',
@@ -88,7 +88,7 @@ class Settings {
 			'did_web_config'
 		);
 
-		// Public Key Multibase field
+		// Public Key Multibase field.
 		register_setting(
 			'did_web_settings',
 			'did_web_public_key_multibase',
@@ -105,7 +105,7 @@ class Settings {
 			'did_web_config'
 		);
 
-		// Key Management Section
+		// Key Management Section.
 		add_settings_section(
 			'did_web_keys',
 			__( 'Key Management', 'did-web' ),
@@ -113,7 +113,7 @@ class Settings {
 			'did-web-settings'
 		);
 
-		// Plugin Identity Section
+		// Plugin Identity Section.
 		add_settings_section(
 			'did_web_plugin_identity',
 			__( 'Plugin Identity', 'did-web' ),
@@ -222,7 +222,7 @@ class Settings {
 			echo '<input type="hidden" name="did_web_action" value="regenerate_plugin_identity" />';
 			echo '</form>';
 
-			// Show current DID document
+			// Show current DID document.
 			echo '<h4>' . esc_html__( 'Plugin DID Document (Virtual)', 'did-web' ) . '</h4>';
 			echo '<p class="description">' . esc_html__( 'Served dynamically from WordPress options. Keys are never stored in filesystem.', 'did-web' ) . '</p>';
 			echo '<pre class="code" style="max-height: 300px; overflow: auto; padding: 10px; background: #f5f5f5;">' . esc_html( Plugin_Identity::get_did_document_json() ) . '</pre>';
@@ -241,9 +241,9 @@ class Settings {
 	 * Render settings page
 	 */
 	public static function render_settings_page() {
-		// Handle form actions
+		// Handle form actions.
 		if ( isset( $_POST['did_web_action'] ) ) {
-			if ( $_POST['did_web_action'] === 'generate_keypair' && check_admin_referer( 'did_web_generate_keypair', 'did_web_generate_keypair_nonce' ) ) {
+			if ( 'generate_keypair' === $_POST['did_web_action'] && check_admin_referer( 'did_web_generate_keypair', 'did_web_generate_keypair_nonce' ) ) {
 				$keypair = Crypto::generate_keypair();
 				if ( $keypair ) {
 					Crypto::save_keypair( $keypair['private'], $keypair['public'] );
@@ -251,16 +251,16 @@ class Settings {
 				} else {
 					echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Failed to generate keypair. OpenSSL with secp256k1 support may not be available.', 'did-web' ) . '</p></div>';
 				}
-			} elseif ( $_POST['did_web_action'] === 'delete_keypair' && check_admin_referer( 'did_web_delete_keypair', 'did_web_delete_keypair_nonce' ) ) {
+			} elseif ( 'delete_keypair' === $_POST['did_web_action'] && check_admin_referer( 'did_web_delete_keypair', 'did_web_delete_keypair_nonce' ) ) {
 				Crypto::delete_keypair();
 				echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Keypair deleted successfully!', 'did-web' ) . '</p></div>';
-			} elseif ( $_POST['did_web_action'] === 'generate_plugin_identity' && check_admin_referer( 'did_web_generate_plugin_identity', 'did_web_generate_plugin_identity_nonce' ) ) {
+			} elseif ( 'generate_plugin_identity' === $_POST['did_web_action'] && check_admin_referer( 'did_web_generate_plugin_identity', 'did_web_generate_plugin_identity_nonce' ) ) {
 				if ( Plugin_Identity::generate_identity() ) {
 					echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Plugin identity generated successfully! Keys stored securely in WordPress options.', 'did-web' ) . '</p></div>';
 				} else {
 					echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Failed to generate plugin identity.', 'did-web' ) . '</p></div>';
 				}
-			} elseif ( $_POST['did_web_action'] === 'regenerate_plugin_identity' && check_admin_referer( 'did_web_regenerate_plugin_identity', 'did_web_regenerate_plugin_identity_nonce' ) ) {
+			} elseif ( 'regenerate_plugin_identity' === $_POST['did_web_action'] && check_admin_referer( 'did_web_regenerate_plugin_identity', 'did_web_regenerate_plugin_identity_nonce' ) ) {
 				Plugin_Identity::delete_identity();
 				if ( Plugin_Identity::generate_identity() ) {
 					echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Plugin identity regenerated successfully!', 'did-web' ) . '</p></div>';

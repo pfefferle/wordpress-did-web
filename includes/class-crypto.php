@@ -7,7 +7,7 @@
 
 namespace Did_Web;
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -28,16 +28,18 @@ class Crypto {
 	 * @return array|false Array with 'private' and 'public' keys, or false on failure.
 	 */
 	public static function generate_keypair() {
-		// Check if OpenSSL is available
+		// Check if OpenSSL is available.
 		if ( ! function_exists( 'openssl_pkey_new' ) ) {
 			return false;
 		}
 
-		// For now, we'll use a placeholder that allows manual key import
-		// In production, this should use secp256k1 library
-		// Example libraries: simplito/elliptic-php or kornrunner/secp256k1
+		/*
+		 * For now, we'll use a placeholder that allows manual key import.
+		 * In production, this should use secp256k1 library.
+		 * Example libraries: simplito/elliptic-php or kornrunner/secp256k1.
+		 */
 
-		// Generate EC keypair (as placeholder - should be secp256k1 for ATProto)
+		// Generate EC keypair (as placeholder - should be secp256k1 for ATProto).
 		$config = array(
 			'private_key_type' => OPENSSL_KEYTYPE_EC,
 			'curve_name'       => 'secp256k1',
@@ -49,11 +51,11 @@ class Crypto {
 			return false;
 		}
 
-		// Export private key
+		// Export private key.
 		$private_key = '';
 		openssl_pkey_export( $private_key_resource, $private_key );
 
-		// Get public key
+		// Get public key.
 		$key_details = openssl_pkey_get_details( $private_key_resource );
 		$public_key  = $key_details['key'];
 
@@ -106,7 +108,7 @@ class Crypto {
 	 * @param string $public_key Public key in PEM format.
 	 * @return string|false Public key in multibase format, or false if not configured.
 	 */
-	public static function public_key_to_multibase( $public_key ) {
+	public static function public_key_to_multibase( $public_key ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found, VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Parameter reserved for future multibase encoding implementation.
 		// Check for manually configured multibase key first.
 		$manual_key = get_option( 'did_web_public_key_multibase', '' );
 		if ( ! empty( $manual_key ) ) {
@@ -132,7 +134,7 @@ class Crypto {
 	 * @return bool True if both keys exist, false otherwise.
 	 */
 	public static function has_keypair() {
-		return self::get_private_key() !== false && self::get_public_key() !== false;
+		return false !== self::get_private_key() && false !== self::get_public_key();
 	}
 
 	/**

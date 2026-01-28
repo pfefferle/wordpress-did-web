@@ -12,41 +12,43 @@
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * DID: did:web:github.com:pfefferle:wordpress-did
+ *
+ * @package Did_Web
  */
 
 namespace Did_Web;
 
-// Exit if accessed directly
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Plugin constants
+// Plugin constants.
 define( 'DID_WEB_VERSION', '1.0.0' );
 define( 'DID_WEB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DID_WEB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'DID_WEB_PLUGIN_FILE', __FILE__ );
 
-// Autoload classes
+// Autoload classes.
 spl_autoload_register(
-	function ( $class ) {
-		// Only load our classes
-		if ( strpos( $class, 'Did_Web\\' ) !== 0 ) {
+	function ( $class_name ) {
+		// Only load our classes.
+		if ( strpos( $class_name, 'Did_Web\\' ) !== 0 ) {
 			return;
 		}
 
-		// Convert class name to file path
-		$class = str_replace( 'Did_Web\\', '', $class );
-		$class = str_replace( '\\', '/', $class );
-		$class = strtolower( str_replace( '_', '-', $class ) );
+		// Convert class name to file path.
+		$class_name = str_replace( 'Did_Web\\', '', $class_name );
+		$class_name = str_replace( '\\', '/', $class_name );
+		$class_name = strtolower( str_replace( '_', '-', $class_name ) );
 
-		// Build file path
-		$file = DID_WEB_PLUGIN_DIR . 'includes/class-' . $class . '.php';
+		// Build file path.
+		$file = DID_WEB_PLUGIN_DIR . 'includes/class-' . $class_name . '.php';
 
-		// Handle admin classes
-		if ( strpos( $class, 'admin/' ) === 0 ) {
-			$class = str_replace( 'admin/', '', $class );
-			$file  = DID_WEB_PLUGIN_DIR . 'includes/admin/class-' . $class . '.php';
+		// Handle admin classes.
+		if ( strpos( $class_name, 'admin/' ) === 0 ) {
+			$class_name = str_replace( 'admin/', '', $class_name );
+			$file       = DID_WEB_PLUGIN_DIR . 'includes/admin/class-' . $class_name . '.php';
 		}
 
 		if ( file_exists( $file ) ) {
@@ -55,12 +57,12 @@ spl_autoload_register(
 	}
 );
 
-// Initialize admin settings
+// Initialize admin settings.
 if ( is_admin() ) {
 	Admin\Settings::init();
 }
 
-// Initialize plugin identity
+// Initialize plugin identity.
 Plugin_Identity::init();
 
 /**
@@ -114,7 +116,7 @@ function did( $wp ) {
 		\header( 'Access-Control-Allow-Origin: *' );
 		\header( 'Cache-Control: max-age=3600' );
 
-		// Use the new DID_Document class
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON output.
 		echo DID_Document::get_json();
 		\exit;
 	}

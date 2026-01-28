@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.2', '8.3', '8.5']
+        php-versions: ['7.4', '8.3', '8.5']
         include:
           - wp-version: latest
 

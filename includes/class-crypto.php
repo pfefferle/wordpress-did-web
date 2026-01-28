@@ -71,10 +71,12 @@ class Crypto {
 	 * @return bool True on success, false on failure.
 	 */
 	public static function save_keypair( $private_key, $public_key ) {
-		$private_saved = update_option( self::OPTION_PRIVATE_KEY, $private_key, false );
-		$public_saved  = update_option( self::OPTION_PUBLIC_KEY, $public_key, false );
+		update_option( self::OPTION_PRIVATE_KEY, $private_key, false );
+		update_option( self::OPTION_PUBLIC_KEY, $public_key, false );
 
-		return $private_saved && $public_saved;
+		// Verify the keys were saved by reading them back.
+		return get_option( self::OPTION_PRIVATE_KEY ) === $private_key
+			&& get_option( self::OPTION_PUBLIC_KEY ) === $public_key;
 	}
 
 	/**
@@ -99,26 +101,29 @@ class Crypto {
 	 * Convert public key to Multibase format
 	 *
 	 * Converts the public key to the Multibase format required by DID documents.
-	 * This is a placeholder implementation.
+	 * Note: Full multibase encoding requires additional libraries (e.g., simplito/elliptic-php).
 	 *
 	 * @param string $public_key Public key in PEM format.
-	 * @return string Public key in multibase format.
+	 * @return string|false Public key in multibase format, or false if not configured.
 	 */
 	public static function public_key_to_multibase( $public_key ) {
-		// This is a placeholder. In production, this should:
-		// 1. Parse the PEM key
-		// 2. Extract the raw public key bytes
-		// 3. Add multicodec prefix for secp256k1-pub (0xe7)
-		// 4. Encode in base58btc with 'z' prefix
-
-		// For now, allow manual entry via settings
+		// Check for manually configured multibase key first.
 		$manual_key = get_option( 'did_web_public_key_multibase', '' );
 		if ( ! empty( $manual_key ) ) {
 			return $manual_key;
 		}
 
-		// Return a placeholder that indicates this needs configuration
-		return 'zQmPlaceholder' . substr( md5( $public_key ), 0, 40 );
+		/*
+		 * Full multibase encoding requires:
+		 * 1. Parse the PEM key
+		 * 2. Extract the raw public key bytes
+		 * 3. Add multicodec prefix for secp256k1-pub (0xe7)
+		 * 4. Encode in base58btc with 'z' prefix
+		 *
+		 * This requires external libraries not bundled with this plugin.
+		 * Users should generate keys externally and enter the multibase value in settings.
+		 */
+		return false;
 	}
 
 	/**

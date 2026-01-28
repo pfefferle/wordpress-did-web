@@ -55,7 +55,14 @@ class Settings {
 		);
 
 		// Handle field
-		register_setting( 'did_web_settings', 'did_web_handle' );
+		register_setting(
+			'did_web_settings',
+			'did_web_handle',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			)
+		);
 		add_settings_field(
 			'did_web_handle',
 			__( 'Bluesky Handle', 'did-web' ),
@@ -65,7 +72,14 @@ class Settings {
 		);
 
 		// PDS Endpoint field
-		register_setting( 'did_web_settings', 'did_web_pds_endpoint' );
+		register_setting(
+			'did_web_settings',
+			'did_web_pds_endpoint',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'esc_url_raw',
+			)
+		);
 		add_settings_field(
 			'did_web_pds_endpoint',
 			__( 'PDS Endpoint', 'did-web' ),
@@ -75,7 +89,14 @@ class Settings {
 		);
 
 		// Public Key Multibase field
-		register_setting( 'did_web_settings', 'did_web_public_key_multibase' );
+		register_setting(
+			'did_web_settings',
+			'did_web_public_key_multibase',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			)
+		);
 		add_settings_field(
 			'did_web_public_key_multibase',
 			__( 'Public Key (Multibase)', 'did-web' ),

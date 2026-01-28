@@ -31,12 +31,12 @@ define( 'DID_WEB_PLUGIN_FILE', __FILE__ );
 spl_autoload_register(
 	function ( $class ) {
 		// Only load our classes
-		if ( strpos( $class, 'Did\\' ) !== 0 ) {
+		if ( strpos( $class, 'Did_Web\\' ) !== 0 ) {
 			return;
 		}
 
 		// Convert class name to file path
-		$class = str_replace( 'Did\\', '', $class );
+		$class = str_replace( 'Did_Web\\', '', $class );
 		$class = str_replace( '\\', '/', $class );
 		$class = strtolower( str_replace( '_', '-', $class ) );
 
@@ -86,12 +86,20 @@ function query_vars( $vars ) {
 /**
  * Flush rewrite rules on plugin activation
  */
-function flush_rewrite_rules() {
+function activate() {
 	rewrite_rule();
 	Plugin_Identity::add_rewrite_rules();
 	\flush_rewrite_rules();
 }
-\register_activation_hook( __FILE__, __NAMESPACE__ . '\flush_rewrite_rules' );
+\register_activation_hook( __FILE__, __NAMESPACE__ . '\activate' );
+
+/**
+ * Clean up rewrite rules on plugin deactivation
+ */
+function deactivate() {
+	\flush_rewrite_rules();
+}
+\register_deactivation_hook( __FILE__, __NAMESPACE__ . '\deactivate' );
 
 /**
  * Handle DID request.
@@ -103,6 +111,8 @@ function did( $wp ) {
 
 	if ( array_key_exists( 'did', $query_vars ) ) {
 		\header( 'Content-Type: application/json' );
+		\header( 'Access-Control-Allow-Origin: *' );
+		\header( 'Cache-Control: max-age=3600' );
 
 		// Use the new DID_Document class
 		echo DID_Document::get_json();

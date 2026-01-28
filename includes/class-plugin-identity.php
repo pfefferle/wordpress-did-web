@@ -66,6 +66,7 @@ class Plugin_Identity {
 
 		header( 'Content-Type: application/json' );
 		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Cache-Control: max-age=3600' );
 
 		echo self::get_did_document_json();
 		exit;
@@ -91,7 +92,9 @@ class Plugin_Identity {
 
 		// Generate multibase representation
 		$multibase = Crypto::public_key_to_multibase( $keypair['public'] );
-		update_option( self::OPTION_PLUGIN_PUBLIC_KEY_MULTIBASE, $multibase, false );
+		if ( $multibase ) {
+			update_option( self::OPTION_PLUGIN_PUBLIC_KEY_MULTIBASE, $multibase, false );
+		}
 
 		return true;
 	}

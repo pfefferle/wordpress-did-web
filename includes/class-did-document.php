@@ -56,7 +56,8 @@ class DID_Document {
 		// If no public key is configured, try to get from crypto class
 		if ( empty( $public_key_mb ) && Crypto::has_keypair() ) {
 			$public_key    = Crypto::get_public_key();
-			$public_key_mb = Crypto::public_key_to_multibase( $public_key );
+			$multibase     = Crypto::public_key_to_multibase( $public_key );
+			$public_key_mb = $multibase ? $multibase : '';
 		}
 
 		$document = array(

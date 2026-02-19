@@ -12,6 +12,6 @@
 		"lint:fix": "composer lint:fix"
 	},
 	"devDependencies": {
-		"@wordpress/env": "^10.39.0"
+		"@wordpress/env": "^11.0.0"
 	}
 }
